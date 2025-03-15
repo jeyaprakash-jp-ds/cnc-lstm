@@ -13,7 +13,7 @@ def load_pickle_model(model_path):
 # Load encoder, scaler, and deep learning model
 encoder = load_pickle_model("Encoder_MP (1).pkl")
 scaler = load_pickle_model("scaler (1).pkl")
-model = tf.keras.models.load_model("final.h5")
+model = tf.keras.models.load_model("final_lstm.h5")
 
 # Streamlit UI
 st.set_page_config(page_title="CNC Prediction", layout="wide")
