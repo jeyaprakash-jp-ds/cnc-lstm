@@ -42,7 +42,7 @@ if uploaded_file is not None:
 
             # Encode categorical column
             if 'Machining_Process' in df.columns:
-                df['Machining_Process'] = encoder.transform(df[["Machining_Process"]])
+                df['Machining_Process'] = enc.transform(df[["Machining_Process"]])
             else:
                 st.error("Column 'Machining_Process' not found in the uploaded file.")
 
