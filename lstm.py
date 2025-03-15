@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder
-import tensorflow as tf
 import pickle
+import tensorflow as tf
 from tensorflow.keras.models import load_model
+from sklearn.preprocessing import StandardScaler, OrdinalEncoder
 
 # Function to load pickle files
 def load_pickle_model(model_path):
@@ -11,8 +11,8 @@ def load_pickle_model(model_path):
         return pickle.load(file)
 
 # Load encoder, scaler, and deep learning model
-encoder = load_pickle_model("Encoder_MP (1).pkl")
-scaler = load_pickle_model("scaler (1).pkl")
+encoder = load_pickle_model("Encoder_MP.pkl")
+scaler = load_pickle_model("scale.pkl")
 model = tf.keras.models.load_model("final_lstm.h5")
 
 # Streamlit UI
@@ -42,7 +42,7 @@ if uploaded_file is not None:
 
             # Encode categorical column
             if 'Machining_Process' in df.columns:
-                df['Machining_Process'] = enc.transform(df[["Machining_Process"]])
+                df['Machining_Process'] = encoder.transform(df[["Machining_Process"]])
             else:
                 st.error("Column 'Machining_Process' not found in the uploaded file.")
 
@@ -55,6 +55,7 @@ if uploaded_file is not None:
     if st.button('Get Predictions'):
         with st.spinner("Generating predictions..."):
             df_scaled = scaler.transform(df)
+            df_scaled = df_scaled.reshape(df_scaled.shape[0], 1, df_scaled.shape[1])  # Reshape for LSTM
             predictions = model.predict(df_scaled)
 
             # Assign prediction results
@@ -69,4 +70,3 @@ if uploaded_file is not None:
         # Download button
         csv = df.to_csv(index=False)
         st.download_button("Download Predictions", csv, "predictions.csv", "text/csv")
-
