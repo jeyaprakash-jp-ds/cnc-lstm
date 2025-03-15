@@ -11,8 +11,8 @@ def load_pickle_model(model_path):
         return pickle.load(file)
 
 # Load encoder, scaler, and deep learning model
-encoder = load_pickle_model("Encoder_MP.pkl")
-scaler = load_pickle_model("scaler.pkl")
+encoder = load_pickle_model("Encoder_MP(1).pkl")
+scaler = load_pickle_model("scaler(1).pkl")
 model = tf.keras.models.load_model("final.h5")
 
 # Streamlit UI
